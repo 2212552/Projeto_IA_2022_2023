@@ -28,36 +28,83 @@ class WarehouseState(State[Action]):
                     self.column_exit = j
 
     def can_move_up(self) -> bool:
+
+        # CONDIÇOES PARA O FORKLIFT SE MOVER PARA CIMA
+        # 1 - PODE MOVER CASO ESTEJA A ACIMA DE 0 E FOR MENOR QUE O DO NUMERO DE LINHAS -1
+        # 2 - PODE MOVER CASO NÃO SEJA UMA PARTELEIRA (SHELF) OU UM PRODUTO (PRODUCT)
+
         # TODO
-        pass
+        return self.line_forklift > 0\
+            and self.matrix[self.line_forklift -1][self.column_forklift] != constants.SHELF \
+            and self.matrix[self.line_forklift - 1][self.column_forklift] != constants.PRODUCT
+
+        #TEM DE SER DIFERENTE DA SELF E DIFERENTE DA PRODUCT
+
+
+
 
     def can_move_right(self) -> bool:
+
+        #CONDIÇOES PARA O FORKLIFT SE MOVER PARA A DIREITA
+        # 1 - PODE MOVER CASO A POSIÇÃO NÃO EXECEDE O NUMERO DE COLUNAS -1
+        # 2 - PODE MOVER CASO NÃO SEJA UMA PARTELEIRA (SHELF) OU UM PRODUTO (PRODUCT)
+
         # TODO
-        pass
+        return self.column_forklift < self.columns-1 \
+            and self.matrix[self.line_forklift][self.column_forklift + 1] != constants.SHELF \
+            and self.matrix[self.line_forklift][self.column_forklift + 1] != constants.PRODUCT
+
+
 
     def can_move_down(self) -> bool:
+
+        #CONDIÇOES PARA O FORKLIFT SE MOVER PARA BAIXO
+        # 1 - PODE MOVER CASO O SEJA > 0
+        # 2 - PODE MOVER CASO NÃO SEJA UMA PARTELEIRA (SHELF) OU UM PRODUTO (PRODUCT)
+
         # TODO
-        pass
+
+        return self.line_forklift < self.rows - 1 \
+            and self.matrix[self.line_forklift + 1][self.column_forklift] != constants.SHELF \
+            and self.matrix[self.line_forklift + 1][self.column_forklift] != constants.PRODUCT
 
     def can_move_left(self) -> bool:
+
+        #CONDIÇOES PARA O FORKLIFT SE MOVER PARA ESQUERDA
+        # 1 - PODE MOVER CASO A POSIÇÃO ATUAL DO FORKLIFT > 0
+        # 2 - PODE MOVER CASO NÃO SEJA UMA PARTELEIRA (SHELF) OU UM PRODUTO (PRODUCT)
+
         # TODO
-        pass
+        return self.column_forklift > 0 \
+            and self.matrix[self.line_forklift][self.column_forklift - 1] != constants.SHELF \
+            and self.matrix[self.line_forklift][self.column_forklift - 1] != constants.PRODUCT
 
     def move_up(self) -> None:
         # TODO
-        pass
+        self.matrix[self.line_forklift][self.column_forklift] = constants.EMPTY
+        self.line_forklift -= 1
+        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
+
 
     def move_right(self) -> None:
         # TODO
-        pass
+        self.matrix[self.line_forklift][self.column_forklift] = constants.EMPTY
+        self.column_forklift += 1
+        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_down(self) -> None:
         # TODO
-        pass
+        self.matrix[self.line_forklift][self.column_forklift] = constants.EMPTY
+        self.line_forklift += 1
+        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
+
 
     def move_left(self) -> None:
         # TODO
-        pass
+        self.matrix[self.line_forklift][self.column_forklift] = constants.EMPTY
+        self.column_forklift -= 1
+        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
+
 
     def get_cell_color(self, row: int, column: int) -> Color:
         if row == self.line_exit and column == self.column_exit and (

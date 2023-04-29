@@ -27,6 +27,8 @@ class WarehouseProblemSearch(Problem[WarehouseState]):
         return successor
 
     def is_goal(self, state: WarehouseState) -> bool:
+
+        # COMPRAR VALOR DA COLUNA E LINHA DO ESTADO ATUAL COM O VALOR DA COLUNA E LINHA DO ESTADO OBJETIVO
         # TODO
-        pass
+        return state.column_forklift == self.goal_position.column and state.line_forklift == self.goal_position.line
 

@@ -620,6 +620,16 @@ class SearchSolver(threading.Thread):
     def run(self):
         # TODO calculate pairs distances
 
+        pair = self.agent.pairs[0]
+        state = copy.deepcopy(self.agent.initial_environment)
+        state.line.forklift = pair.cell1.line
+        state.column_forklift = pair.cell1.column
+        problem = WarehouseProblemSearch(state, Cell(pair.cell2.line, pair.cell2.column-1))
+
+        solution = self.agent.search_method(problem)
+
+
+
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
         self.gui.manage_buttons(data_set=tk.NORMAL, runSearch=tk.DISABLED, runGA=tk.NORMAL, stop=tk.DISABLED,
