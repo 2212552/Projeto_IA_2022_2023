@@ -10,7 +10,6 @@ import queue
 import threading
 
 import constants
-from WarehouseProject_TODO.search_methods.solution import Solution
 from ga.genetic_operators.mutation2 import Mutation2
 from ga.genetic_operators.mutation3 import Mutation3
 from ga.genetic_operators.recombination3 import Recombination3
@@ -610,41 +609,20 @@ class ExperimentsRunner(threading.Thread):
 
 class SearchSolver(threading.Thread):
 
-    def __init__(self, gui: Window, solution: Solution, agent: WarehouseAgentSearch):
+    def __init__(self, gui: Window, agent: WarehouseAgentSearch):
         super(SearchSolver, self).__init__()
         self.gui = gui
         self.agent = agent
-        self.solution = solution
-
 
     def stop(self):
         self.agent.stop()
 
     def run(self):
         # TODO calculate pairs distances
-        self.thread_running = True
-        actions = self.solution.actions
-        iteration = 0
-        #state = copy.deepcopy(self.agent.initial_environment)
-        state.line.forklift = pair.cell1.line
-        state.column_forklift = pair.cell2.column
-        for p in self.agent.pairs:
-            actions[p].execute(self.agent.initial_environment)
-            iteration += 1
-            self.gui.queue.put((copy.deepcopy(self.agent.initial_environment), False))
 
-        self.gui.queue.put((None, True))
-
-
-
-        # pair = self.agent.pairs[0]
-        # state = copy.deepcopy(self.agent.initial_environment)
-        # state.line.forklift = pair.cell1.line
-        # state.column_forklift = pair.cell2.column
-        # problem = WarehouseProblemSearch(state, Cell(pair.cell1.line, pair.cell2.column-1))
-        # solution = self.agent.search_method(problem)
-
-
+        pair = self.agent.pairs[0]
+        state = self.agent.initial_environment
+        #state.positioar po fortclif
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
