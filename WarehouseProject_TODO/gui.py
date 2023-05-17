@@ -10,7 +10,6 @@ import queue
 import threading
 
 import constants
-from WarehouseProject_TODO.search_methods.solution import Solution
 from ga.genetic_operators.mutation2 import Mutation2
 from ga.genetic_operators.mutation3 import Mutation3
 from ga.genetic_operators.recombination3 import Recombination3
@@ -612,11 +611,10 @@ class ExperimentsRunner(threading.Thread):
 
 class SearchSolver(threading.Thread):
 
-    def __init__(self, gui: Window, solution: Solution, agent: WarehouseAgentSearch):
+    def __init__(self, gui: Window,  agent: WarehouseAgentSearch):
         super(SearchSolver, self).__init__()
         self.gui = gui
         self.agent = agent
-        self.solution = solution
 
 
     def stop(self):
