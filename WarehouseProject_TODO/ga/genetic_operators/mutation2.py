@@ -7,7 +7,13 @@ class Mutation2(Mutation):
 
     def mutate(self, ind: IntVectorIndividual) -> None:
         # TODO
-        pass
+        # Por exemplo um produto com as cordenadas [3,2] fica [2,3]
+        for i in range(len(ind.genome)):
+            if ind.genome[i] % 2 == 0:
+                ind.genome[i] = ind.genome[i] + 1
+            else:
+                ind.genome[i] = ind.genome[i] - 1
+
 
     def __str__(self):
         return "Mutation 2 (" + f'{self.probability}' + ")"

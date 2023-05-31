@@ -8,7 +8,9 @@ class Recombination2(Recombination):
 
     def recombine(self, ind1: Individual, ind2: Individual) -> None:
         # TODO
+        self.recombine(ind1, ind2)
         pass
+
 
     def __str__(self):
         return "Recombination 2 (" + f'{self.probability}' + ")"

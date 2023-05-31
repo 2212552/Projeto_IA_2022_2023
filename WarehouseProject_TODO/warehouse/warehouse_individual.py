@@ -10,6 +10,11 @@ class WarehouseIndividual(IntVectorIndividual):
         # TODO
         return 0
 
+
+    # Calcula os caminhos completos percorridos pelo forklifts. Devove
+    #devolve uma lista de Listas de celulas (as celulas percorridas por cada forklift);
+    #e o numero maximo de passos necessario para percorrer todos os caminhos(i.e., o numero de celulas do caminho mais longo
+    #percorrido por um forklift).
     def obtain_all_path(self):
         # TODO
         pass
