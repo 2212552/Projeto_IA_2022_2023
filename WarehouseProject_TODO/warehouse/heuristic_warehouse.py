@@ -9,12 +9,10 @@ class HeuristicWarehouse(Heuristic[WarehouseProblemSearch, WarehouseState]):
         super().__init__()
 
     def compute(self, state: WarehouseState) -> float:
-        # TODO
         # Definir uma heuristica para definir a distancia a que o forklift está do objetivo
         # Calcular a distancia do forklift ao objetivo numPassos = |(linhaForklift - linhaObjetivo)| + |(linhaForklift - linhaObjetivo)|
 
         return abs(state.line_forklift - self._problem.goal_position.line) + abs(state.column_forklift - self._problem.goal_position.column)
-        pass
 
     def __str__(self):
         return "# TODO"

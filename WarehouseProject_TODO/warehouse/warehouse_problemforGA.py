@@ -12,7 +12,19 @@ class WarehouseProblemGA(Problem):
 
     def generate_individual(self) -> "WarehouseIndividual":
         # TODO
-        pass
+        #
+        # 4 produtos
+        # 2 agetns
+        #
+        # 1 x 3 agent
+        # 2 x 4 agent
+        #
+
+        # pensar num vetor que iria organizar isso
+        #
+        # genome tem de ser valores sequenciais
+        new_individual = WarehouseIndividual(self, len(self.products) + len(self.forklifts) - 1)
+        return new_individual
 
     def __str__(self):
         string = "# of forklifts: "
