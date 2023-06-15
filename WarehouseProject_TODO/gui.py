@@ -18,9 +18,11 @@ from ga.genetic_operators.recombination2 import Recombination2
 from ga.genetic_operators.recombination_pmx import RecombinationPMX
 from ga.genetic_operators.mutation_insert import MutationInsert
 from ga.genetic_algorithm_thread import GeneticAlgorithmThread
+from warehouse.cell import Cell
 from warehouse.warehouse_agent_search import WarehouseAgentSearch, read_state_from_txt_file
 from warehouse.warehouse_experiments_factory import WarehouseExperimentsFactory
 from warehouse.warehouse_problemforGA import WarehouseProblemGA
+from warehouse.warehouse_problemforSearch import WarehouseProblemSearch
 from warehouse.warehouse_state import WarehouseState
 
 matplotlib.use("TkAgg")
@@ -609,20 +611,90 @@ class ExperimentsRunner(threading.Thread):
 
 class SearchSolver(threading.Thread):
 
+<<<<<<< HEAD
     def __init__(self, gui: Window, agent: WarehouseAgentSearch):
         super(SearchSolver, self).__init__()
         self.gui = gui
         self.agent = agent
+=======
+    def __init__(self, gui: Window,  agent: WarehouseAgentSearch):
+        super(SearchSolver, self).__init__()
+        self.gui = gui
+        self.agent = agent
+
+>>>>>>> GA
 
     def stop(self):
         self.agent.stop()
 
     def run(self):
         # TODO calculate pairs distances
+<<<<<<< HEAD
 
         pair = self.agent.pairs[0]
         state = self.agent.initial_environment
         #state.positioar po fortclif
+=======
+
+        #Ciclo FOR para percorrer os pairs(neste momento esta a calcular apenas para o primeiro pair
+
+        for pair in self.agent.pairs:
+
+            cell1 = copy.copy(pair.cell1)
+            #Fazer uma copia do estado inicial
+            state = copy.copy(self.agent.initial_environment)
+
+            # ---- [ FORKLIFT POSITION ] ----
+            #verificar se existe algum FORKLIFT na lista de FORKLIFTS que esteja posicionado no pair1
+            if self.agent.forklifts.__contains__(cell1):
+                #Posicionar o FORKLIFT na posição do pair 1
+                state.line_forklift = cell1.line
+                state.column_forklift = cell1.column
+            #Verificar se existe numa posição adjacente
+            else:
+                #Verificar se for a primeira coluna então
+                if cell1.column == 0:
+                    cell1.column += 1
+                # Verificar se na coluna da esquerda esta vazia
+                elif state.matrix[cell1.line][cell1.column-1] == constants.EMPTY:
+                    cell1.column -= 1
+                #Verificar se na coluna da direita esta vazia
+                else:
+                    cell1.column += 1
+                state.line_forklift = cell1.line
+                state.column_forklift = cell1.column
+
+            cell2 = copy.copy(pair.cell2)
+
+            # ---- [ GOAL POSITION ] ----
+            if cell2!=self.agent.exit:
+                if cell2.column == 0:
+                    cell2.column += 1
+                #Verificar se na coluna da esquerda esta vazia
+                elif state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
+                    cell2.column -= 1
+                    # Verificar se na coluna da direita esta vazia
+                else:
+                    cell2.column += 1
+
+            #Criar instancia da class problem (forklift, goal)
+            problem = WarehouseProblemSearch(state, cell2)
+
+            #aplicar o a*
+            solution = self.agent.solve_problem(problem)
+
+            print(self.agent.solve_problem(problem))
+
+            #numero de passos que o forklift ao goal
+            pair.value = int(solution.cost)
+
+        #-------------------------------------------------------------
+
+        #mostrar a distancia de cada pair
+        self.gui.text_problem.delete("1.0", "end")
+        #self.gui.text_problem.insert(tk.END, str(self.agent) + "\n" + str(self.agent_search))
+        self.gui.text_problem.insert(tk.END, str(self.agent))
+>>>>>>> GA
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
