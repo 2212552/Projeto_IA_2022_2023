@@ -15,6 +15,10 @@ class WarehouseIndividual(IntVectorIndividual):
     #devolve uma lista de Listas de celulas (as celulas percorridas por cada forklift);
     #e o numero maximo de passos necessario para percorrer todos os caminhos(i.e., o numero de celulas do caminho mais longo
     #percorrido por um forklift).
+    """
+    - Uma lista, de dimensao igual ao numero de forklifts; que contém as listas de celulas percorridas por cada forklift nesta solução.
+    -o numero maximo de celulas percorrido por um dos forklifts, ou seja, a dimensão do maior lista de celulas
+    """
     def obtain_all_path(self):
         # TODO
         pass

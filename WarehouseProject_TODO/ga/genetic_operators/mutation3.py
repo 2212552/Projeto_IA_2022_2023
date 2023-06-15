@@ -7,6 +7,12 @@ class Mutation3(Mutation):
 
     def mutate(self, ind: IntVectorIndividual) -> None:
         # TODO
+        # Semelhante ao mutation 2 se der para arranjar 1 melhor trocar
+        for i in range(len(ind.genome)):
+            if ind.genome[i] % 2 == 0:
+                ind.genome[i] = ind.genome[i] + 2
+            else:
+                ind.genome[i] = ind.genome[i] - 2
         pass
 
     def __str__(self):
