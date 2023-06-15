@@ -611,30 +611,18 @@ class ExperimentsRunner(threading.Thread):
 
 class SearchSolver(threading.Thread):
 
-<<<<<<< HEAD
-    def __init__(self, gui: Window, agent: WarehouseAgentSearch):
-        super(SearchSolver, self).__init__()
-        self.gui = gui
-        self.agent = agent
-=======
+
     def __init__(self, gui: Window,  agent: WarehouseAgentSearch):
         super(SearchSolver, self).__init__()
         self.gui = gui
         self.agent = agent
 
->>>>>>> GA
 
     def stop(self):
         self.agent.stop()
 
     def run(self):
         # TODO calculate pairs distances
-<<<<<<< HEAD
-
-        pair = self.agent.pairs[0]
-        state = self.agent.initial_environment
-        #state.positioar po fortclif
-=======
 
         #Ciclo FOR para percorrer os pairs(neste momento esta a calcular apenas para o primeiro pair
 
@@ -694,7 +682,7 @@ class SearchSolver(threading.Thread):
         self.gui.text_problem.delete("1.0", "end")
         #self.gui.text_problem.insert(tk.END, str(self.agent) + "\n" + str(self.agent_search))
         self.gui.text_problem.insert(tk.END, str(self.agent))
->>>>>>> GA
+
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
