@@ -6,7 +6,6 @@ class Mutation2(Mutation):
         super().__init__(probability)
 
     def mutate(self, ind: IntVectorIndividual) -> None:
-        # TODO
         # Por exemplo um produto com as cordenadas [3,2] fica [2,3]
         for i in range(len(ind.genome)):
             if ind.genome[i] % 2 == 0:
