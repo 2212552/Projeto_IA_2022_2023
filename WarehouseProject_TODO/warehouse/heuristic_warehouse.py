@@ -12,6 +12,7 @@ class HeuristicWarehouse(Heuristic[WarehouseProblemSearch, WarehouseState]):
         # Definir uma heuristica para definir a distancia a que o forklift está do objetivo
         # Calcular a distancia do forklift ao objetivo numPassos = |(linhaForklift - linhaObjetivo)| + |(linhaForklift - linhaObjetivo)|
 
+        # TODO (CONCLUIDO)
         return abs(state.line_forklift - self._problem.goal_position.line) + abs(state.column_forklift - self._problem.goal_position.column)
 
     def __str__(self):

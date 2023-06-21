@@ -13,8 +13,10 @@ class IntVectorIndividual(Individual):
         #range_start = 1  # Start of the range (inclusive)
         #range_end = 100  # End of the range (exclusive)
 
-        self.genome = np.array(random.sample(range(1, num_genes+1), num_genes))
+        self.genome = random.sample(range(1, num_genes+1),num_genes)
+        #self.genome = np.array(random.sample(range(1, num_genes+1), num_genes))
 
+        #print("ddd")
         #print("GENOME: ", self.genome)
 
     def swap_genes(self, other, index: int):

@@ -6,17 +6,19 @@ class WarehouseIndividual(IntVectorIndividual):
 
     def __init__(self, problem: "WarehouseProblem", num_genes: int):
         super().__init__(problem, num_genes)
-        # TODO
+        # TODO (VER COM A PROF)
+        self.fitness = 0
+        self.result = []
+
+
+
 
      #   print(self.genome)
 
 
     def compute_fitness(self) -> float:
-        # TODO
-        print(self.genome)
-
-
-
+        # TODO (VER COM A PROF)
+        #print(self.genome)
 
         #wharehouseproblemga
         # return uma instancia da class Warehouse individual, com o tamnho dos genes
@@ -37,54 +39,111 @@ class WarehouseIndividual(IntVectorIndividual):
         #procurar o par na lista de pares
         #seprar os produtos por forklift
 
-
         l_forklifts = self.problem.agent_search.forklifts
-        products = self.problem.agent_search.products
-        l_products=[]
-        aux=[]
-        arr_genomas = self.genome
-        #PREENCHER A LISTA DE PRODUTOS POR FORKLIFTS
-        agent = 0
+        self.agents = len(l_forklifts)
+        l_products = self.problem.agent_search.products
 
+        arr_genomas = self.genome
+
+        #PREENCHER A LISTA DE PRODUTOS POR FORKLIFTS
+
+
+        #PROCURAR ONDE ESTAO OS BREAKPOINTS NO GENOMA
         breaker_pos = []
 
-
-        for i in range(arr_genomas.size):
-            print(arr_genomas[i])
-            if not (arr_genomas[i] <= len(products)):
+        for i in range(len(arr_genomas)):
+            #print(arr_genomas[i])
+            if not (arr_genomas[i] <= len(l_products)):
                breaker_pos.append(i)
 
         result = []
         prev_position = 0
+        firstTime = True
 
+        #PARA TESTAR
+        # if breaker_pos[0] == 0:
+        #     print("ERRO")
+
+        #CONSTRUIR A LISTA DE PRODUTOS POR FORKLIFTS
         for pos in breaker_pos:
-            if len(breaker_pos) > 1 and prev_position != 0:
-                subarray = arr_genomas[(prev_position+1):pos]
-                result.append(subarray)
-                prev_position = pos
-            else:
+            #if len(breaker_pos) > 1 and not firstTime:
+            if firstTime:
+                #[2,1,3]
                 subarray = arr_genomas[prev_position:pos]
                 result.append(subarray)
-                prev_position = pos
+
+                firstTime = False
+            else:
+                subarray = arr_genomas[(prev_position):pos]
+                result.append(subarray)
+            prev_position = pos + 1
 
         # Add the remaining portion as the last subarray
-        result.append(arr_genomas[(prev_position+1):])
-        print("LISTA:")
-        print(breaker_pos)
-        #recolher os produtos todos
-        #recolher os forklifts
+        if len(breaker_pos) >= 1:
+            #o prev_position so é definido no for
+            result.append(arr_genomas[prev_position:])
+        else:
+            result.append(arr_genomas.copy())
+        #print("LISTA:")
+        #print(breaker_pos)
 
+        self.result= result
 
-        return 0
+        #CALCULAR O FITNESS-> SOMAR AS DISTANCIAS
+        #print(range(result.__len__()))
+        for i in range(result.__len__()):
+            start = l_forklifts[i]
+            #Agent que não tem nada para fazer (VAZIO)
+            if result[i].__len__() == 0:
+                continue
+            for k in range(result[i].__len__()+1):
+                #CASO SEJA IGUAL AO TAMANHO DO RESULT, É O EXIT
+                if result[i].__len__() == k:
+                    end = self.problem.agent_search.exit
+                else:
+                    end = l_products[result[i][k]-1]
+
+                self.fitness += self.calculate_distance(start, end)
+                start = end
+
+        self.show_agents()
+
+        return self.fitness
+
+    def calculate_distance(self, start, end):
+        pairs = self.problem.agent_search.pairs
+
+        for pair in pairs:
+            if ((pair.cell1 == start and pair.cell2 == end) or (pair.cell1 == end and pair.cell2 == start)):
+                return pair.value
+
+    def show_agents(self):
+        agent_counter = 0
+        print("-------------------------------------")
+        for products in self.result:
+            agent_counter += 1
+            print(f"Agent: {agent_counter}")
+            print(f"{products}" + "\n")
+            # for item in products:
+            #     string += str(item) + " "
+        print("-------------------------------------")
 
     def obtain_all_path(self):
-        # TODO
-        pass
+           pass
 
     def __str__(self):
         string = 'Fitness: ' + f'{self.fitness}' + '\n'
-        string += str (self.genome) + "\n\n"
-        # TODO
+        string += 'Genoma: ' + f'{self.genome}' + "\n\n"
+        #string += 'Agents: ' + f'{self.result}' + "\n\n"
+
+        # agent_counter = 0
+        # for products in self.result:
+        #     agent_counter += 1
+        #     string += "Agent: " + str(agent_counter) + "\n"
+        #     for item in products:
+        #         string += str(item) + " "
+
+        # TODO (VER COM A PROF)
         return string
 
     def better_than(self, other: "WarehouseIndividual") -> bool:
@@ -95,5 +154,5 @@ class WarehouseIndividual(IntVectorIndividual):
         new_instance = self.__class__(self.problem, self.num_genes)
         new_instance.genome = self.genome.copy()
         new_instance.fitness = self.fitness
-        # TODO
+        # TODO (VER COM A PROF)
         return new_instance
