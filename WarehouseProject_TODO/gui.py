@@ -674,6 +674,7 @@ class SearchSolver(threading.Thread):
 
             #numero de passos que o forklift ao goal
             pair.value = int(solution.cost)
+            pair.cels= solution.cels
 
         #-------------------------------------------------------------
 

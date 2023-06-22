@@ -10,9 +10,6 @@ class WarehouseIndividual(IntVectorIndividual):
         self.fitness = 0
         self.result = []
 
-
-
-
      #   print(self.genome)
 
 
@@ -39,14 +36,13 @@ class WarehouseIndividual(IntVectorIndividual):
         #procurar o par na lista de pares
         #seprar os produtos por forklift
 
+        self.fitness = 0
+
         l_forklifts = self.problem.agent_search.forklifts
         self.agents = len(l_forklifts)
         l_products = self.problem.agent_search.products
 
         arr_genomas = self.genome
-
-        #PREENCHER A LISTA DE PRODUTOS POR FORKLIFTS
-
 
         #PROCURAR ONDE ESTAO OS BREAKPOINTS NO GENOMA
         breaker_pos = []
@@ -88,6 +84,7 @@ class WarehouseIndividual(IntVectorIndividual):
         #print(breaker_pos)
 
         self.result= result
+        self.distanceForklift=np.zeros(len(result))
 
         #CALCULAR O FITNESS-> SOMAR AS DISTANCIAS
         #print(range(result.__len__()))
@@ -95,6 +92,9 @@ class WarehouseIndividual(IntVectorIndividual):
             start = l_forklifts[i]
             #Agent que não tem nada para fazer (VAZIO)
             if result[i].__len__() == 0:
+                self.fitness+=self.calculate_distance(start, self.problem.agent_search.exit)
+                self.distanceForklift[i]+=self.calculate_distance(start, self.problem.agent_search.exit)
+
                 continue
             for k in range(result[i].__len__()+1):
                 #CASO SEJA IGUAL AO TAMANHO DO RESULT, É O EXIT
@@ -104,9 +104,11 @@ class WarehouseIndividual(IntVectorIndividual):
                     end = l_products[result[i][k]-1]
 
                 self.fitness += self.calculate_distance(start, end)
+                self.distanceForklift[i]+=self.calculate_distance(start, end)
                 start = end
 
-        self.show_agents()
+        self.fitness+=np.max(self.distanceForklift)
+        #self.show_agents()
 
         return self.fitness
 
@@ -117,18 +119,19 @@ class WarehouseIndividual(IntVectorIndividual):
             if ((pair.cell1 == start and pair.cell2 == end) or (pair.cell1 == end and pair.cell2 == start)):
                 return pair.value
 
-    def show_agents(self):
-        agent_counter = 0
-        print("-------------------------------------")
-        for products in self.result:
-            agent_counter += 1
-            print(f"Agent: {agent_counter}")
-            print(f"{products}" + "\n")
-            # for item in products:
-            #     string += str(item) + " "
-        print("-------------------------------------")
+    # def show_agents(self):
+    #     agent_counter = 0
+    #     print("-------------------------------------")
+    #     for products in self.result:
+    #         agent_counter += 1
+    #         print(f"Agent: {agent_counter}")
+    #         print(f"{products}" + "\n")
+    #         # for item in products:
+    #         #     string += str(item) + " "
+    #     print("-------------------------------------")
 
     def obtain_all_path(self):
+
            pass
 
     def __str__(self):
@@ -136,13 +139,14 @@ class WarehouseIndividual(IntVectorIndividual):
         string += 'Genoma: ' + f'{self.genome}' + "\n\n"
         #string += 'Agents: ' + f'{self.result}' + "\n\n"
 
-        # agent_counter = 0
-        # for products in self.result:
-        #     agent_counter += 1
-        #     string += "Agent: " + str(agent_counter) + "\n"
-        #     for item in products:
-        #         string += str(item) + " "
+        agent_counter = 0
+        for i, products in enumerate(self.result):
+            agent_counter += 1
+            string += "\nAgent: " + str(agent_counter) + "\nProducts:"
 
+            for item in products:
+                string += str(item) + " "
+            string+="\n" + "distance: " + str(self.distanceForklift[i]) + "\n"
         # TODO (VER COM A PROF)
         return string
 
@@ -154,5 +158,7 @@ class WarehouseIndividual(IntVectorIndividual):
         new_instance = self.__class__(self.problem, self.num_genes)
         new_instance.genome = self.genome.copy()
         new_instance.fitness = self.fitness
+        new_instance.result = self.result
+        new_instance.distanceForklift = self.distanceForklift
         # TODO (VER COM A PROF)
         return new_instance
